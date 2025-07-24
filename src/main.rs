@@ -1,4 +1,5 @@
 use clap::Parser;
+use serde_json::Value;
 use std::{
     env,
     fs::{self, write},
@@ -13,11 +14,14 @@ struct Cli {}
 
 #[derive(Debug, Error)]
 enum Error {
-    #[error("The env var `{name}` is missing.")]
+    #[error("the env var `{name}` is missing.")]
     MissingEnvVar { source: env::VarError, name: String },
 
     #[error("failed to open event file : `{path}`")]
     OpenEventFile { source: io::Error, path: PathBuf },
+
+    #[error("there is no missing value in event")]
+    MissingCommitsValue,
 }
 
 fn env_var_load(env_name: &str) -> Result<String, Error> {
@@ -45,13 +49,14 @@ fn main() -> anyhow::Result<()> {
         source,
         path: github_event_path.into(),
     })?;
+
+    let root: Value = serde_json::from_str(&event)?;
+    let commits = root.get("commits").ok_or(Error::MissingCommitsValue)?;
     //if debug {
-    eprintln!("event={event}");
+    eprintln!("commits={commits}");
     //}
 
     let github_output_path = env::var("GITHUB_OUTPUT").unwrap();
-
-    let commits = "wip"; //TODO
     write(github_output_path, format!("commits={commits}")).unwrap();
 
     Ok(())
