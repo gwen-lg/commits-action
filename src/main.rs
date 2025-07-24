@@ -1,3 +1,7 @@
+use std::env;
+
 fn main() {
-    eprintln!("::warning title=empty action::This action do nothing");
+    let github_event = env::var("GITHUB_EVENT").unwrap();
+
+    eprintln!("::warning title=empty action::This action have been triggered by `{github_event}` but do nothing");
 }
