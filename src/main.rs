@@ -45,9 +45,9 @@ fn main() -> anyhow::Result<()> {
         source,
         path: github_event_path.into(),
     })?;
-    if debug {
-        eprintln!("event={event}");
-    }
+    //if debug {
+    eprintln!("event={event}");
+    //}
 
     let github_output_path = env::var("GITHUB_OUTPUT").unwrap();
 

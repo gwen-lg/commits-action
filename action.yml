@@ -57,10 +57,13 @@ runs:
       id: run
       run: ./${{ runner.os }}/${{ env.binary_name }}
 
-    - name: Build and Run Action
+    - name: Build Action
       if: ${{ inputs.current }}
       shell: bash
       run: |
         cargo build --release
-        mkdir ${{ runner.os }}
+    - name: Run Action
+      if: ${{ inputs.current }}
+      shell: bash
+      run: |
         ./target/release/${{ env.binary_name }}
