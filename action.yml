@@ -7,9 +7,9 @@ inputs:
     required: true
     default: ${{ github.token }}
 outputs:
-  error:
-    description: "The description of any error that occurred"
-    value: ${{ steps.run.outputs.error }}
+  commits:
+    description: "The list of commits related to the event"
+    value: ${{ steps.run.outputs.commits }}
 
 runs:
   using: "composite"
