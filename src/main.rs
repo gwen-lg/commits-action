@@ -10,6 +10,9 @@ struct Cli {}
 enum Error {
     #[error("The env var `GITHUB_EVENT_NAME` is missing.")]
     MissingGithubEventNameEnvVar(#[source] env::VarError),
+
+    #[error("The env var `GITHUB_EVENT` is missing.")]
+    MissingGithubEventEnvVar(#[source] env::VarError),
 }
 
 fn main() -> anyhow::Result<()> {
@@ -20,6 +23,11 @@ fn main() -> anyhow::Result<()> {
 
     if debug {
         eprintln!("::warning title=empty action::This action have been triggered by `{github_event_name}` but do nothing");
+    }
+
+    let github_event = env::var("GITHUB_EVENT").map_err(Error::MissingGithubEventEnvVar)?;
+    if debug {
+        eprintln!("event={github_event}");
     }
 
     let github_output_path = env::var("GITHUB_OUTPUT").unwrap();
