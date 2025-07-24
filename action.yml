@@ -63,4 +63,4 @@ runs:
       run: |
         cargo build --release
         mkdir ${{ runner.os }}
-        ./target/release/${{ env.binary_name }} --version
+        ./target/release/${{ env.binary_name }}
