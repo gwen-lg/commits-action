@@ -1,0 +1,8 @@
+[package]
+name = "commits-action"
+description = "Generates the list of commits from a Push or PR event"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.67"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
