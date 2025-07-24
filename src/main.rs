@@ -25,9 +25,9 @@ fn main() -> anyhow::Result<()> {
         eprintln!("::warning title=empty action::This action have been triggered by `{github_event_name}` but do nothing");
     }
 
-    let github_event = env::var("GITHUB_EVENT").map_err(Error::MissingGithubEventEnvVar)?;
+    let github = env::var("GITHUB").map_err(Error::MissingGithubEventEnvVar)?;
     if debug {
-        eprintln!("event={github_event}");
+        eprintln!("event={github}");
     }
 
     let github_output_path = env::var("GITHUB_OUTPUT").unwrap();
