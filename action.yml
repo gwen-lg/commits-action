@@ -2,10 +2,6 @@ name: commits-action
 description: Generates the list of commits from a Push or PR event
 author: Gwen Lg <me@gwenlg.fr>
 inputs:
-  error:
-    description: 'The error message to display, if any'
-    required: false
-    default: ''
   token:
     description: "The GitHub token to use for downloading the action, defaults to workflow token"
     required: true
@@ -53,4 +49,4 @@ runs:
     - name: Run Action
       shell: bash
       id: run
-      run: ./${{ runner.os }}/${{ env.binary_name }} "${{ inputs.error }}"
+      run: ./${{ runner.os }}/${{ env.binary_name }}
