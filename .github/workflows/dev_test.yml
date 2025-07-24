@@ -1,0 +1,13 @@
+name: Test consuming this action
+on:
+  push:
+    branches-ignore: ["main"]
+
+jobs:
+  test_success:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          current: true

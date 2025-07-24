@@ -2,6 +2,10 @@ name: commits-action
 description: Generates the list of commits from a Push or PR event
 author: Gwen Lg <me@gwenlg.fr>
 inputs:
+  current:
+    description: "Run current code"
+    required: false
+    default: "false"
   token:
     description: "The GitHub token to use for downloading the action, defaults to workflow token"
     required: true
@@ -39,6 +43,7 @@ runs:
         Write-Output "version=$version" >> $Env:GITHUB_OUTPUT
 
     - name: Download Action
+      if: ${{ !inputs.current }}
       shell: bash
       run: |
         gh release download ${{ steps.get_action_version.outputs.version }} --repo ${{ env.action_org }}/${{ env.action_repo }} --pattern '${{ runner.os }}.tgz'
@@ -47,6 +52,15 @@ runs:
         GITHUB_TOKEN: ${{ inputs.token }}
 
     - name: Run Action
+      if: ${{ !inputs.current }}
       shell: bash
       id: run
       run: ./${{ runner.os }}/${{ env.binary_name }}
+
+    - name: Build and Run Action
+      if: ${{ inputs.current }}
+      shell: bash
+      run: |
+        cargo build --release
+        mkdir ${{ runner.os }}
+        ./target/release/${{ env.binary_name }} --version
